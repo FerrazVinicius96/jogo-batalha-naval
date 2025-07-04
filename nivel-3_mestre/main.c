@@ -31,7 +31,7 @@ int main(void){
     int navio_v[TAM_NAVIO] = {3, 3, 3}; // vertical
 
     int linha_h = 2, coluna_h = 4; // horizontal
-    int linha_v = 2, coluna_v = 5; // vertical
+    int linha_v = 2, coluna_v = 7; // vertical
 
     // == Posicionamento do navio horizontal ==
     if (coluna_h + TAM_NAVIO <= TAM_TAB) {
