@@ -1,50 +1,87 @@
-# ⚓ Nível 1 — Posicionamento Básico de Navios
+🚢 Desafio: Posicionando Navios no Tabuleiro (Nível Novato)
+===========================================================
 
-Este é o primeiro nível do projeto **Batalha Naval em C**, cujo objetivo é representar um tabuleiro simples com o posicionamento inicial de dois navios fixos, utilizando vetores e matriz.
+Nível: Novato  
+Linguagem: C  
+Conceito-chave: Arrays unidimensionais e bidimensionais (vetores e matrizes)
 
----
+📑 Tabela de Conteúdo
+----------------------
+- [🎯 Objetivo](#🎯-objetivo)
+- [📌 O que você vai fazer](#📌-o-que-você-vai-fazer)
+- [✅ Requisitos Funcionais](#✅-requisitos-funcionais)
+- [🚫 Requisitos Não Funcionais](#🚫-requisitos-não-funcionais)
+- [🎯 Simplificações](#🎯-simplificações)
+- [📤 Exemplo de Saída Esperada](#📤-exemplo-de-saída-esperada)
+- [⚙️ Como Compilar e Executar](#⚙️-como-compilar-e-executar)
+- [💡 Dica Final](#💡-dica-final)
 
-## 🎯 Objetivo
+🎯 Objetivo
+-----------
+Iniciar o desenvolvimento de um jogo de Batalha Naval simulando o posicionamento de navios em um tabuleiro 10x10, utilizando vetores e matrizes em linguagem C.
 
-O foco deste nível é exercitar o uso de **matriz bidimensional** para representar o tabuleiro e **vetores unidimensionais** para representar os navios.
+📌 O que você vai fazer
+------------------------
+1. **Representar o Tabuleiro**
+   - Criar uma matriz 10x10 preenchida com `0`, representando água.
 
----
+2. **Posicionar os Navios**
+   - Criar dois vetores representando navios de tamanho fixo (3 casas).
+   - Posicionar um navio horizontalmente e outro verticalmente no tabuleiro.
+   - Usar o valor `3` para representar as casas ocupadas por navios na matriz.
 
-## 📌 Especificações do exercício
+3. **Exibir o Tabuleiro**
+   - Utilizar `loops aninhados` com `printf` para imprimir o tabuleiro completo no console.
+   - A saída deve permitir visualizar facilmente onde estão os navios.
 
-### 🚢 Posicionamento dos Navios
+✅ Requisitos Funcionais
+-------------------------
+- Coordenadas iniciais (linha e coluna) devem ser definidas diretamente no código.
+- Verificar se os navios estão dentro dos limites da matriz.
+- Garantir que os navios **não se sobreponham**.
+- Exibir o tabuleiro no console com `0`s (água) e `3`s (navios).
 
-- Declare e inicialize **dois vetores** (arrays unidimensionais) para representar os navios.
-- Cada navio deve ocupar um número fixo de posições (exemplo: **3 posições**).
-- Um navio deve ser posicionado **horizontalmente** e o outro **verticalmente** no tabuleiro.
-- As posições ocupadas pelos navios devem ser representadas pelo número **3**.
-- O restante da matriz deve conter **0**, indicando água.
-- As posições dos navios devem:
-  - Estar **completamente dentro dos limites** da matriz (10x10).
-  - **Não se sobrepor**.
+🚫 Requisitos Não Funcionais
+-----------------------------
+- Execução eficiente, sem atrasos.
+- Código comentado explicando a lógica de variáveis, laços e blocos.
+- Nomes de variáveis claros e código organizado com indentação consistente.
 
-💡 **Dica:** O posicionamento pode ser feito copiando o valor 3 de cada posição do vetor do navio para a matriz nas coordenadas desejadas, de acordo com sua orientação (horizontal ou vertical).
+🎯 Simplificações
+------------------
+- Tabuleiro de tamanho fixo: 10x10.
+- Navios com tamanho fixo: 3 posições.
+- Sem entrada do usuário — posições definidas no código.
+- Não é necessário simular jogadas ou ataques.
+- Validação de sobreposição pode ser simplificada (ex: checagem simples de colisão).
 
----
+📤 Exemplo de Saída Esperada
+-----------------------------
+Exemplo de visualização no console:
 
-### 🖨️ Exibição do Tabuleiro
+```
+0 0 0 0 0 0 0 0 0 0  
+0 0 0 3 3 3 0 0 0 0  
+0 0 0 0 0 0 0 0 0 0  
+0 0 0 0 0 0 0 0 0 0  
+0 0 0 0 0 0 0 0 0 0  
+3 0 0 0 0 0 0 0 0 0  
+3 0 0 0 0 0 0 0 0 0  
+3 0 0 0 0 0 0 0 0 0  
+0 0 0 0 0 0 0 0 0 0  
+0 0 0 0 0 0 0 0 0 0  
+```
 
-- Exiba o tabuleiro completo no console usando **loops aninhados** e o comando `printf`.
-- Utilize espaçamento ou outro caractere separador para facilitar a leitura.
-- A saída deve deixar claro quais posições estão ocupadas por navios (`3`) e quais representam água (`0`).
+⚙️ Como Compilar e Executar
+----------------------------
+1. Salve o código como `batalha_naval.c`
+2. Compile com:
+   gcc batalha_naval.c -o batalha
+3. Execute:
+   ./batalha
 
----
+💡 Dica Final
+-------------
+Use funções separadas para melhorar a organização: uma para inicializar o tabuleiro, outra para posicionar os navios, e outra para exibir. Isso facilita a manutenção e evolução do projeto nos próximos desafios.
 
-## 📊 Exemplo de Saída Esperada
-
-```txt
-0 0 0 0 0 0 0 0 0 0
-0 3 3 3 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0
-0 0 0 3 0 0 0 0 0 0
-0 0 0 3 0 0 0 0 0 0
-0 0 0 3 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0
+Divirta-se navegando no código! 🚢💻
