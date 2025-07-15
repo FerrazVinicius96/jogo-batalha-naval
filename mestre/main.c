@@ -1,15 +1,30 @@
 #include <stdio.h>
 
+// Constantes
 #define TAM_TAB 10
+#define TAM_NAVIO 3
 #define LINHA_HAB 3
 #define COLUNA_HAB 5
-#define TAM_NAVIO 3
 
-int main(void){
+// Protótipos
+void impressao_tabuleiro(int tabuleiro[TAM_TAB][TAM_TAB]);
+int posicionar_navio_horizontal(int tabuleiro[TAM_TAB][TAM_TAB], int navio[], int linha, int coluna);
+int posicionar_navio_vertical(int tabuleiro[TAM_TAB][TAM_TAB], int navio[], int linha, int coluna);
+int posicionar_navio_diagonal_principal(int tabuleiro[TAM_TAB][TAM_TAB], int navio[], int linha, int coluna);
+int posicionar_navio_diagonal_invertida(int tabuleiro[TAM_TAB][TAM_TAB], int navio[], int linha, int coluna);
+void aplicar_habilidade(int tabuleiro[TAM_TAB][TAM_TAB], int habilidade[LINHA_HAB][COLUNA_HAB], int linha, int coluna, int marcador);
+
+int main() {
     // == Tabuleiro ==
     int tabuleiro[TAM_TAB][TAM_TAB] = {0};
 
-    // == Habilidades Especiais ==
+    // == Navios ==
+    int navio_h[TAM_NAVIO]  = {3, 3, 3};
+    int navio_v[TAM_NAVIO]  = {3, 3, 3};
+    int navio_d1[TAM_NAVIO] = {3, 3, 3};
+    int navio_d2[TAM_NAVIO] = {3, 3, 3};
+
+    // == Habilidades ==
     int hab_cone[LINHA_HAB][COLUNA_HAB] = {
         {0, 0, 1, 0, 0},
         {0, 1, 1, 1, 0},
@@ -26,79 +41,95 @@ int main(void){
         {0, 0, 1, 0, 0}
     };
 
-    // == Navios ==
-    int navio_h[TAM_NAVIO] = {3, 3, 3}; // horizontal
-    int navio_v[TAM_NAVIO] = {3, 3, 3}; // vertical
+    // == Posicionamento dos navios ==
+    if (!posicionar_navio_horizontal(tabuleiro, navio_h, 0, 0))
+        printf("Erro ao posicionar navio horizontal.\n");
 
-    int linha_h = 2, coluna_h = 4; // horizontal
-    int linha_v = 2, coluna_v = 7; // vertical
+    if (!posicionar_navio_vertical(tabuleiro, navio_v, 2, 3))
+        printf("Erro ao posicionar navio vertical.\n");
 
-    // == Posicionamento do navio horizontal ==
-    if (coluna_h + TAM_NAVIO <= TAM_TAB) {
-        for (int i = 0; i < TAM_NAVIO; i++) {
-            tabuleiro[linha_h][coluna_h + i] = navio_h[i];
-        }
-    } else {
-        printf("Erro: navio horizontal fora dos limites!\n");
-    }
+    if (!posicionar_navio_diagonal_principal(tabuleiro, navio_d1, 6, 6))
+        printf("Erro ao posicionar navio diagonal ↘.\n");
 
-    // == Posicionamento do navio vertical ==
-    if (linha_v + TAM_NAVIO <= TAM_TAB) {
-        for (int i = 0; i < TAM_NAVIO; i++) {
-            if (tabuleiro[linha_v + i][coluna_v] == 0) {
-                tabuleiro[linha_v + i][coluna_v] = navio_v[i];
-            } else {
-                printf("Erro: sobreposição de navios detectada!\n");
-                return 1;
-            }
-        }
-    } else {
-        printf("Erro: navio vertical fora dos limites!\n");
-    }
+    if (!posicionar_navio_diagonal_invertida(tabuleiro, navio_d2, 8, 5))
+        printf("Erro ao posicionar navio diagonal ↗.\n");
 
-    // == Coordenadas dos ataques ==
-    int linha_ataque_cone = 4, coluna_ataque_cone = 4;
-    int linha_ataque_cruz = 0, coluna_ataque_cruz = 4;
-    int linha_ataque_octaedro = 3, coluna_ataque_octaedro = 2;
+    // == Aplicação das habilidades ==
+    aplicar_habilidade(tabuleiro, hab_cone, 4, 4, 9);
+    aplicar_habilidade(tabuleiro, hab_cruz, 0, 4, 8);
+    aplicar_habilidade(tabuleiro, hab_octaedro, 3, 2, 7);
 
-    // == Ataque com habilidade cone ==
-    if (linha_ataque_cone + LINHA_HAB <= TAM_TAB && coluna_ataque_cone + COLUNA_HAB <= TAM_TAB) {
-        for (int i = 0; i < LINHA_HAB; i++) {
-            for (int j = 0; j < COLUNA_HAB; j++) {
-                if (hab_cone[i][j] == 1)
-                    tabuleiro[linha_ataque_cone + i][coluna_ataque_cone + j] = 9;
-            }
-        }
-    }
-
-    // == Ataque com habilidade cruz ==
-    if (linha_ataque_cruz + LINHA_HAB <= TAM_TAB && coluna_ataque_cruz + COLUNA_HAB <= TAM_TAB) {
-        for (int i = 0; i < LINHA_HAB; i++) {
-            for (int j = 0; j < COLUNA_HAB; j++) {
-                if (hab_cruz[i][j] == 1)
-                    tabuleiro[linha_ataque_cruz + i][coluna_ataque_cruz + j] = 8;
-            }
-        }
-    }
-
-    // == Ataque com habilidade octaedro ==
-    if (linha_ataque_octaedro + LINHA_HAB <= TAM_TAB && coluna_ataque_octaedro + COLUNA_HAB <= TAM_TAB) {
-        for (int i = 0; i < LINHA_HAB; i++) {
-            for (int j = 0; j < COLUNA_HAB; j++) {
-                if (hab_octaedro[i][j] == 1)
-                    tabuleiro[linha_ataque_octaedro + i][coluna_ataque_octaedro + j] = 7;
-            }
-        }
-    }
-
-    // == Impressão final do tabuleiro ==
+    // == Impressão final ==
     printf("\n=== Tabuleiro Final ===\n\n");
+    impressao_tabuleiro(tabuleiro);
+
+    return 0;
+}
+
+// ===== Funções de Utilidade =====
+
+void impressao_tabuleiro(int tabuleiro[TAM_TAB][TAM_TAB]) {
     for (int i = 0; i < TAM_TAB; i++) {
         for (int j = 0; j < TAM_TAB; j++) {
             printf("%d ", tabuleiro[i][j]);
         }
         printf("\n");
     }
+}
 
+void aplicar_habilidade(int tabuleiro[TAM_TAB][TAM_TAB], int habilidade[LINHA_HAB][COLUNA_HAB], int linha, int coluna, int marcador) {
+    if (linha + LINHA_HAB <= TAM_TAB && coluna + COLUNA_HAB <= TAM_TAB) {
+        for (int i = 0; i < LINHA_HAB; i++) {
+            for (int j = 0; j < COLUNA_HAB; j++) {
+                if (habilidade[i][j] == 1)
+                    tabuleiro[linha + i][coluna + j] = marcador;
+            }
+        }
+    }
+}
+
+// ===== Funções de Posicionamento =====
+
+int posicionar_navio_horizontal(int tabuleiro[TAM_TAB][TAM_TAB], int navio[], int linha, int coluna) {
+    if (coluna + TAM_NAVIO <= TAM_TAB) {
+        for (int i = 0; i < TAM_NAVIO; i++)
+            if (tabuleiro[linha][coluna + i] != 0) return 0;
+        for (int i = 0; i < TAM_NAVIO; i++)
+            tabuleiro[linha][coluna + i] = navio[i];
+        return 1;
+    }
+    return 0;
+}
+
+int posicionar_navio_vertical(int tabuleiro[TAM_TAB][TAM_TAB], int navio[], int linha, int coluna) {
+    if (linha + TAM_NAVIO <= TAM_TAB) {
+        for (int i = 0; i < TAM_NAVIO; i++)
+            if (tabuleiro[linha + i][coluna] != 0) return 0;
+        for (int i = 0; i < TAM_NAVIO; i++)
+            tabuleiro[linha + i][coluna] = navio[i];
+        return 1;
+    }
+    return 0;
+}
+
+int posicionar_navio_diagonal_principal(int tabuleiro[TAM_TAB][TAM_TAB], int navio[], int linha, int coluna) {
+    if (linha + TAM_NAVIO <= TAM_TAB && coluna + TAM_NAVIO <= TAM_TAB) {
+        for (int i = 0; i < TAM_NAVIO; i++)
+            if (tabuleiro[linha + i][coluna + i] != 0) return 0;
+        for (int i = 0; i < TAM_NAVIO; i++)
+            tabuleiro[linha + i][coluna + i] = navio[i];
+        return 1;
+    }
+    return 0;
+}
+
+int posicionar_navio_diagonal_invertida(int tabuleiro[TAM_TAB][TAM_TAB], int navio[], int linha, int coluna) {
+    if (linha - (TAM_NAVIO - 1) >= 0 && coluna + (TAM_NAVIO - 1) < TAM_TAB) {
+        for (int i = 0; i < TAM_NAVIO; i++)
+            if (tabuleiro[linha - i][coluna + i] != 0) return 0;
+        for (int i = 0; i < TAM_NAVIO; i++)
+            tabuleiro[linha - i][coluna + i] = navio[i];
+        return 1;
+    }
     return 0;
 }
